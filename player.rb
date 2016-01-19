@@ -13,4 +13,6 @@ class Player
   def add_ship(ship)
     @ships.push(ship)
   end
+
+  
 end

@@ -4,7 +4,7 @@ load 'player.rb'
 load 'board.rb'
 
 class Game
-  attr_accessor :player, :computer, :current_player, :player_board, :computer_board
+  attr_accessor :player, :computer, :current_player, :player_board, :computer_board, :player_moves, :computer_moves
 
   def initialize
     @player = Player.new
@@ -82,6 +82,7 @@ class Game
     puts "- - - - - - - - - - - - - - - - -"
     print "Your Board:\n"
     print self.player.ships.count.to_s + " ships left\n"
+    print self.player_moves.to_s + "moves left\n"
     print "\n"
     print "\n"
     print (" # ")
@@ -172,39 +173,52 @@ class Game
   end
 
 
-#selects computer ships
-  def place_computer_ships
+#selects computer ships - 4th iteration always has wrong number of coordinates! why?!?!?
+def place_computer_ships
     @temp_computer_coordinates = Array.new
-
     @temp_coord = @computer_board.coordinates.sample
     @x = @temp_coord.xy[0]
     @y = @temp_coord.xy[1].to_i
     @coordinate = @x + @y.to_s
 
-    while @computer.ship_count < 4
+    while @computer.ship_count <= 3
       if (@computer.ship_count % 2 == 0) && (horizontal_coordinates_available(@coordinate, @computer_board))
         @ship = Ship.new
         @computer.add_ship(@ship)
         @computer.ship_count += 1
-        @temp_coordinates = [@x+ ((@y-1).to_s), @xy, @x+ ((@y+1).to_s)]
+        @temp_computer_coordinates = [@x+ ((@y-1).to_s), @xy, @x+ ((@y+1).to_s)]
+        @temp_computer_coordinates.each do |coordinate|
+          @computer_board.coordinates.each do |space|
+            if (space.xy == coordinate)
+              space.has_ship = 1
+              @ship.coordinates.push(space)
+            end
+          end
+        end
       elsif (@computer.ship_count % 2 == 1) && (vertical_coordinates_available(@coordinate, @computer_board))
         @ship = Ship.new
         @computer.add_ship(@ship)
         @computer.ship_count += 1
-        @temp_coordinates = [((@x.next).to_s)+ @y.to_s, @xy, (@x.chr.ord-1).chr + @y.to_s]
+        @temp_computer_coordinates = [((@x.next).to_s)+ @y.to_s, @xy, (@x.chr.ord-1).chr + @y.to_s]
+        @temp_computer_coordinates.each do |coordinate|
+          @computer_board.coordinates.each do |space|
+            if (space.xy == coordinate)
+              space.has_ship = 1
+              @ship.coordinates.push(space)
+            end
+          end
+        end
       else
         place_computer_ships()
       end
-
-      @temp_coordinates.each do |coordinate|
-        @computer_board.coordinates.each do |space|
-          if (space.xy == coordinate)
-            space.has_ship = 1
-            @ship.coordinates.push(space)
-          end
-        end
-      end
-
+      # @temp_computer_coordinates.each do |coordinate|
+      #   @computer_board.coordinates.each do |space|
+      #     if (space.xy == coordinate)
+      #       space.has_ship = 1
+      #       @ship.coordinates.push(space)
+      #     end
+      #   end
+      # end
     end
   end
 
@@ -259,36 +273,15 @@ class Game
     board.coordinates.each do |coordinate|
       if (coordinate.xy == target_coord) && (coordinate.has_ship == 1)
         coordinate.hit = 1
-        sleep 1
-        puts " . . ."
-        print "\n"
-        print "\n"
-        sleep 1
-        puts " . . ."
-        print "\n"
-        print "\n"
-        sleep 1
-        print "\n"
-        print "\n"
         if @current_player == @computer
           draw_player_board(@player_board)
         elsif @current_player == @player
           draw_computer_board(@computer_board)
         end
         puts "Hit!"
+
       elsif (coordinate.xy == target_coord)
         coordinate.miss = 1
-        sleep 1
-        puts " . . ."
-        print "\n"
-        print "\n"
-        sleep 1
-        puts " . . ."
-        print "\n"
-        print "\n"
-        sleep 1
-        print "\n"
-        print "\n"
         if @current_player == @player
           draw_computer_board(@computer_board)
         elsif @current_player == @computer
@@ -305,6 +298,7 @@ class Game
     puts "Select a coordinate to strike! "
     target_coordinate = get_coordinate()
     check_hit(@coordinate, @computer_board)
+    @player_moves -= 1
     @current_player = @computer
   end
 
@@ -314,15 +308,36 @@ class Game
     puts "Computer is preparing to fire . . ."
     target_coordinate = @player_board.available_coordinates.sample.xy
     check_hit(target_coordinate, @player_board)
+    @computer_moves -= 1
     @current_player = @player
   end
 
 end
 
-game = Game.new
-game.place_player_ships
-game.place_computer_ships
-10.times do
-  game.player_turn
-  game.computer_turn
+def countdown
+  sleep 1
+  puts " . . ."
+  print "\n"
+  print "\n"
+  sleep 1
+  puts " . . ."
+  print "\n"
+  print "\n"
+  sleep 1
+  print "\n"
+  print "\n"
 end
+
+def check_win
+end
+
+
+
+# game = Game.new
+# game.place_player_ships
+# game.place_computer_ships
+# while (game.player_moves > 0)
+#   game.player_turn
+#   game.computer_turn
+# end
+# print "Out of turns"
