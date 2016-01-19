@@ -14,5 +14,14 @@ class Player
     @ships.push(ship)
   end
 
-  
+  def check_all_ships
+    self.ships.each do |ship|
+      if ship.check_sink == false
+        return false
+      else
+        next
+      end
+    end
+    return true
+  end
 end

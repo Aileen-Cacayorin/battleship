@@ -329,9 +329,23 @@ def countdown
 end
 
 def check_win
+  if self.current_player.check_all_ships == true
+    if self.current_player == self.player
+      puts "You win"
+    elsif self.current_player == self.computer
+      puts "Computer wins"
+    else
+      next
+    end
+  else
+    next
 end
 
 
+#need start/exit game instructions
+#need to check for valid coordinate entry
+#draw_board and turn timing
+#need play again method
 
 # game = Game.new
 # game.place_player_ships
