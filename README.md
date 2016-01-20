@@ -1,5 +1,5 @@
 #Battleship
-####Play Battleship against a computer in the commandline. (Still in progress)
+####Play Battleship against a computer in the command line. (Still in progress)
 
 ####By Aileen Cacayorin
 
@@ -9,10 +9,10 @@ Simple battleship game in the commandline against a computer. I build this as a 
 
 ##Setup
 
-Clone this repository.
-`cd` into the main directory.
-In the command line, run `ruby game.rb`
-Enjoy!
+* Clone this repository.
+* `cd` into the main directory.
+* In the command line, run `ruby game.rb`
+* Enjoy!
 
 
 
