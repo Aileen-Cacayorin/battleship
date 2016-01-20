@@ -12,8 +12,8 @@ class Game
     @current_player = @player
     @player_board = Board.new
     @computer_board = Board.new
-    @player_moves = 20
-    @computer_moves = 20
+    @player_moves = 25
+    @computer_moves = 25
   end
 
 # Gets coordinate input from player
@@ -26,18 +26,18 @@ class Game
 
 #Player selects ship locations
   def place_player_ships
-    print "Time to place your ships! You will 4 ships total.\n"
+    draw_player_board(@player_board)
+    sleep 1
+    print "Time to place your ships! You will have a total of 4 ships and each ship is 3 coordinates in length. "
     @temp_coordinates = Array.new
 
     while @player.ship_count < 4
       @ship = Ship.new
-      print "\n"
-      print "\n"
-      puts "Place a [V]erticle or [H]orizontal ship? :"
+      puts "Place a [V]erticle or [H]orizontal ship?"
       vh = gets.strip.upcase
 
       if vh == "H"
-        puts "Enter the center coordinate for your ship :"
+        puts "Enter a center coordinate for your ship"
         get_coordinate()
         if horizontal_coordinates_available(@coordinate, @player_board)
           @temp_coordinates =  [@x+ ((@y-1).to_s), @coordinate, @x+ ((@y+1).to_s)]
@@ -47,7 +47,7 @@ class Game
         end
 
       elsif vh == "V"
-        puts "Enter the center coordinate for your ship :"
+        puts "Enter a center coordinate for your ship :"
         get_coordinate()
         if vertical_coordinates_available(@coordinate, @player_board)
           @temp_coordinates = [((@x.next).to_s)+ @y.to_s, @coordinate, (@x.chr.ord-1).chr + @y.to_s]
@@ -81,9 +81,6 @@ class Game
     print "\n"
     puts "- - - - - - - - - - - - - - - - -"
     print "Your Board:\n"
-    print self.player.ships.count.to_s + " ships left\n"
-    print self.player_moves.to_s + "moves left\n"
-    print "\n"
     print "\n"
     print (" # ")
     for i in (1..8) do
@@ -98,6 +95,8 @@ class Game
             print "  x "
           elsif coordinate.has_ship == 1
             print "  # "
+          elsif (coordinate.has_ship == 0) &&(coordinate.miss == 1)
+            print "  o "
           else
             print "  _ "
           end
@@ -108,6 +107,8 @@ class Game
           print " x \n"
         elsif coordinate.has_ship == 1
           print " # \n"
+        elsif (coordinate.has_ship == 0) && (coordinate.miss == 1)
+          print " o \n"
         else
           print(" _ \n")
         end
@@ -117,11 +118,14 @@ class Game
           print " x "
         elsif coordinate.has_ship == 1
           print " # "
+        elsif (coordinate.has_ship == 0) && (coordinate.miss == 1)
+          print " o "
         else
           print(" _ ")
         end
       end
     end
+    print "\n"
   end
 
 # draw player view of computer board - shows hits and misses
@@ -130,8 +134,6 @@ class Game
     count = 1
     puts "- - - - - - - - - - - - - - - - -"
     print "Computer Board:\n"
-    print self.computer.ships.count.to_s + " ships left\n"
-    print "\n"
     print "\n"
     print (" # ")
     for i in (1..8) do
@@ -170,6 +172,7 @@ class Game
         end
       end
     end
+    print "\n"
   end
 
 
@@ -279,6 +282,7 @@ def place_computer_ships
           draw_computer_board(@computer_board)
         end
         puts "Hit!"
+        print "\n"
 
       elsif (coordinate.xy == target_coord)
         coordinate.miss = 1
@@ -288,6 +292,7 @@ def place_computer_ships
           draw_player_board(@player_board)
         end
         puts "Miss!"
+        print "\n"
       end
     end
   end
@@ -295,9 +300,12 @@ def place_computer_ships
   #player selects coordinate to strike
   def player_turn
     draw_computer_board(@computer_board)
-    puts "Select a coordinate to strike! "
+    puts "You have " + self.player_moves.to_s + " moves left. Select a new a new target coordinate! "
     target_coordinate = get_coordinate()
+    puts "Firing . . ."
+    countdown()
     check_hit(@coordinate, @computer_board)
+    check_win(@player)
     @player_moves -= 1
     @current_player = @computer
   end
@@ -306,52 +314,73 @@ def place_computer_ships
   def computer_turn
     sleep 2
     puts "Computer is preparing to fire . . ."
+    countdown()
     target_coordinate = @player_board.available_coordinates.sample.xy
     check_hit(target_coordinate, @player_board)
+    check_win(@computer)
     @computer_moves -= 1
     @current_player = @player
   end
 
-end
+  def countdown
+    sleep 1
+    print "\n"
+    puts " . . ."
+    print "\n"
+    print "\n"
+    sleep 1
+    puts " . . ."
+    print "\n"
+    print "\n"
+    sleep 1
+  end
 
-def countdown
-  sleep 1
-  puts " . . ."
-  print "\n"
-  print "\n"
-  sleep 1
-  puts " . . ."
-  print "\n"
-  print "\n"
-  sleep 1
-  print "\n"
-  print "\n"
-end
+  def check_win(player) #need to test!!!!
+    if player.check_all_ships == true
+      if player == self.player
+        puts "You win"
+        exit
+      end
+      if player == self.computer
+        puts "Computer wins"
+        exit
+      end
 
-def check_win
-  if self.current_player.check_all_ships == true
-    if self.current_player == self.player
-      puts "You win"
-    elsif self.current_player == self.computer
-      puts "Computer wins"
-    else
-      next
     end
-  else
-    next
+  end
+
+  def instructions
+    print "Welcome to Battleship! Start new game [Y]/[N]? "
+    start = gets.strip.to_s.upcase()
+    if start == "Y"
+      self.place_player_ships()
+
+    elsif start == "N"
+      exit
+    else
+      puts "Invalid entry. "
+      instructions()
+    end
+  end
+
+  def game_play
+
+  end
+
+
 end
 
+
+game = Game.new
+game.instructions()
+game.place_computer_ships
+while game.player_moves > 0
+  game.player_turn()
+  game.computer_turn()
+end
+puts "Out of turns"
 
 #need start/exit game instructions
 #need to check for valid coordinate entry
 #draw_board and turn timing
 #need play again method
-
-# game = Game.new
-# game.place_player_ships
-# game.place_computer_ships
-# while (game.player_moves > 0)
-#   game.player_turn
-#   game.computer_turn
-# end
-# print "Out of turns"
