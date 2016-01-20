@@ -1,13 +1,13 @@
-Battleship
-Play Battleship against a computer in the commandline. (Still in progress)
+#Battleship
+####Play Battleship against a computer in the commandline. (Still in progress)
 
-By Aileen Cacayorin
+####By Aileen Cacayorin
 
-Description
+####Description
 
-_ Simple battleship game in the commandline against a computer. I build this as a fun exercise to practice object oriented programming in Ruby.
+Simple battleship game in the commandline against a computer. I build this as a fun exercise to practice object oriented programming in Ruby.
 
-Setup
+##Setup
 
 Clone this repository.
 `cd` into the main directory.
@@ -17,7 +17,7 @@ Enjoy!
 
 
 
-Technologies Used:
+##Technologies Used:
   Ruby
 
 
