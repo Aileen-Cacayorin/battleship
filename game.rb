@@ -22,6 +22,13 @@ class Game
     @x = @xy[0].upcase
     @y = @xy[1].to_i
     @coordinate = @x + @y.to_s
+    if /^[a-hA-H][1-8]/.match(@coordinate)
+      return @coordinate
+    else
+      puts "Invalid coordinate. Please try again."
+      get_coordinate
+    end
+
   end
 
 #Player selects ship locations
