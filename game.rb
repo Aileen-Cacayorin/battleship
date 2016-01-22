@@ -387,7 +387,9 @@ while game.player_moves > 0
 end
 puts "Out of turns"
 
-#need start/exit game instructions
-#need to check for valid coordinate entry
-#draw_board and turn timing
+
+#NEXT TO WORK ON
+#need method to quit game
+#board spacing and turn timing
 #need play again method
+#remove turn limit, let game go on until winner
