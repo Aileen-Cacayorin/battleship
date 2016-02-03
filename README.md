@@ -5,7 +5,7 @@
 
 ####Description
 
-Simple battleship game in the commandline against a computer. I build this as a fun exercise to practice object oriented programming in Ruby.
+Simple battleship game in the commandline against a computer. I build this as a fun exercise to practice object oriented programming in Ruby. Still needs polishing up but most of it is up and running.
 
 ##Setup
 
