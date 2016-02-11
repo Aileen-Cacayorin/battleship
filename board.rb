@@ -24,4 +24,5 @@ class Board
     end
     return coordinates
   end
-end
+
+  

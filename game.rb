@@ -344,11 +344,10 @@ def place_computer_ships
 
   def check_win(player) #need to test!!!!
     if player.check_all_ships() == true
-      if player == self.player
+      if player == @player
         puts "You win"
         exit
-      end
-      if player == self.computer
+      else
         puts "Computer wins"
         exit
       end
@@ -394,3 +393,4 @@ end
 #during computer turn, should say hit or miss THEN draw board
 #notify user that they can't fire at the same location twice
 #notify if ship is sunk
+#add tests
