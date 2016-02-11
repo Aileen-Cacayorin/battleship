@@ -3,6 +3,8 @@ class Coordinate
 
    def initialize(xy)
      @xy = xy
+     @x = xy[0].upcase
+     @y = xy[1].to_i
      @has_ship = 0
      @hit = 0
      @miss = 0

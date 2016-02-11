@@ -26,4 +26,12 @@ class Player
     end
     return true
   end
+
+  def sink_all_ships
+    self.ships.each do |ship|
+      ship.coordinate.each do |coordinate|
+        coordinate.hit == 1
+      end
+    end
+  end
 end

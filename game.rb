@@ -28,7 +28,6 @@ class Game
       puts "Invalid coordinate. Please try again."
       get_coordinate
     end
-
   end
 
 #Player selects ship locations
@@ -213,7 +212,7 @@ def place_computer_ships
     puts "Firing . . ."
     countdown()
     check_hit(@coordinate, @computer.board)
-    check_win(@player)
+    check_win(@computer)
     @player_moves -= 1
     @current_player = @computer
   end
@@ -225,7 +224,7 @@ def place_computer_ships
     countdown()
     target_coordinate = @player.board.available_coordinates.sample.xy
     check_hit(target_coordinate, @player.board)
-    check_win(@computer)
+    check_win(@player)
     @computer_moves -= 1
     @current_player = @player
   end
@@ -245,7 +244,7 @@ def place_computer_ships
 
   def check_win(player) #need to test!!!!
     if player.check_all_ships() == true
-      if player == @player
+      if player == @computer
         puts "You win"
         exit
       else
@@ -272,15 +271,14 @@ def place_computer_ships
 
 end
 
-
-
-
 game = Game.new
 game.instructions()
 game.place_computer_ships()
 while (game.player.check_all_ships == false) && (game.computer.check_all_ships == false)
   game.player_turn()
+  sleep 1
   game.computer_turn()
+  sleep 1
 end
 
 
