@@ -183,7 +183,7 @@ class Game
   end
 
 
-#selects computer ships - 4th iteration always has wrong number of coordinates! why?!?!?
+#selects computer ships
 def place_computer_ships
     @temp_computer_coordinates = Array.new
     @temp_coord = @computer_board.coordinates.sample
@@ -307,7 +307,7 @@ def place_computer_ships
   #player selects coordinate to strike
   def player_turn
     draw_computer_board(@computer_board)
-    puts "You have " + self.player_moves.to_s + " moves left. Select a new a new target coordinate! "
+    puts "You have " + self.player_moves.to_s + " moves left. Select a new target coordinate! "
     target_coordinate = get_coordinate()
     puts "Firing . . ."
     countdown()
@@ -343,7 +343,7 @@ def place_computer_ships
   end
 
   def check_win(player) #need to test!!!!
-    if player.check_all_ships == true
+    if player.check_all_ships() == true
       if player == self.player
         puts "You win"
         exit
@@ -352,7 +352,6 @@ def place_computer_ships
         puts "Computer wins"
         exit
       end
-
     end
   end
 
@@ -370,22 +369,20 @@ def place_computer_ships
     end
   end
 
-  def game_play
-
-  end
-
 
 end
+
+
 
 
 game = Game.new
 game.instructions()
-game.place_computer_ships
-while game.player_moves > 0
+game.place_computer_ships()
+while (game.player.check_all_ships == false) && (game.computer.check_all_ships == false)
   game.player_turn()
   game.computer_turn()
 end
-puts "Out of turns"
+
 
 
 #NEXT TO WORK ON
@@ -393,3 +390,7 @@ puts "Out of turns"
 #board spacing and turn timing
 #need play again method
 #remove turn limit, let game go on until winner
+#refactor
+#during computer turn, should say hit or miss THEN draw board
+#notify user that they can't fire at the same location twice
+#notify if ship is sunk
