@@ -1,13 +1,15 @@
 load 'coordinate.rb'
 load 'ship.rb'
+load 'board.rb'
 
 
 class Player
-  attr_accessor :ships, :ship_count
+  attr_accessor :ships, :ship_count, :board
 
   def initialize
     @ships = Array.new
     @ship_count = 0
+    @board = Board.new
   end
 
   def add_ship(ship)
