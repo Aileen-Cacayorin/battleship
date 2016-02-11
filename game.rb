@@ -4,7 +4,7 @@ load 'player.rb'
 load 'board.rb'
 
 class Game
-  attr_accessor :player, :computer, :current_player, :player_board, :computer_board, :player_moves, :computer_moves
+  attr_accessor :player, :computer, :current_player, :player_board, :computer_board
 
   def initialize
     @player = Player.new
@@ -12,8 +12,6 @@ class Game
     @current_player = @player
     @player.board = Board.new
     @computer.board= Board.new
-    @player_moves = 25
-    @computer_moves = 25
   end
 
 # Gets coordinate input from player
@@ -207,13 +205,12 @@ def place_computer_ships
   #player selects coordinate to strike
   def player_turn
     @computer.board.draw_computer_board()
-    puts "You have " + self.player_moves.to_s + " moves left. Select a new target coordinate! "
+    puts "Your turn to fire. Select a new target coordinate! "
     target_coordinate = get_coordinate()
     puts "Firing . . ."
     countdown()
     check_hit(@coordinate, @computer.board)
     check_win(@computer)
-    @player_moves -= 1
     @current_player = @computer
   end
 
@@ -225,7 +222,6 @@ def place_computer_ships
     target_coordinate = @player.board.available_coordinates.sample.xy
     check_hit(target_coordinate, @player.board)
     check_win(@player)
-    @computer_moves -= 1
     @current_player = @player
   end
 
@@ -287,9 +283,7 @@ end
 #need method to quit game
 #board spacing and turn timing
 #need play again method
-#remove turn limit, let game go on until winner
 #refactor
-#during computer turn, should say hit or miss THEN draw board
 #notify user that they can't fire at the same location twice
 #notify if ship is sunk
 #add tests
