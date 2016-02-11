@@ -118,14 +118,6 @@ def place_computer_ships
       else
         place_computer_ships()
       end
-      # @temp_computer_coordinates.each do |coordinate|
-      #   @computer_board.coordinates.each do |space|
-      #     if (space.xy == coordinate)
-      #       space.has_ship = 1
-      #       @ship.coordinates.push(space)
-      #     end
-      #   end
-      # end
     end
   end
 
